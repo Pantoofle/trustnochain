@@ -31,6 +31,7 @@ pub struct CLIConfig {
     /// Root event unix time for first Trustchain root on testnet.
     pub root_event_time: u32,
     pub ion_endpoint: Endpoint,
+    pub sovrin_genesis_transactions: String,
 }
 
 /// Wrapper struct for parsing the `cli` table.
@@ -52,6 +53,9 @@ mod tests {
         ion_endpoint.host = "http://127.0.0.1"
         ion_endpoint.port = 3000
 
+        [sovrin]
+        sovrin_genesis_transactions = ./TestNet.txn
+
         [non_core]
         key = "value"
         "#;
@@ -62,7 +66,8 @@ mod tests {
             config,
             CLIConfig {
                 root_event_time: 1666971942,
-                ion_endpoint: Endpoint::new("http://127.0.0.1".to_string(), 3000)
+                ion_endpoint: Endpoint::new("http://127.0.0.1".to_string(), 3000),
+                sovrin_genesis_transactions: "./TestNet.txn".to_string(),
             }
         );
     }

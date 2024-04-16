@@ -6,6 +6,9 @@ bitcoin_connection_string = "http://localhost:18332"
 bitcoin_rpc_username = "<YOUR_BITCOIN_RPC_USERNAME>"
 bitcoin_rpc_password = "<YOUR_BITCOIN_RPC_PASSWORD>"
 
+[sovrin]
+sovrin_genesis_transactions = "./testNet.txn"
+
 [http]
 host = "127.0.0.1"
 host_reference = "127.0.0.1"
