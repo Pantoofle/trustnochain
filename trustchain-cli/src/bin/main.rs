@@ -18,6 +18,7 @@ use trustchain_ion::{
     trustchain_resolver,
     verifier::TrustchainVerifier,
 };
+use trustchain_sovrin;
 
 fn cli() -> Command {
     Command::new("Trustchain CLI")
@@ -27,6 +28,7 @@ fn cli() -> Command {
         .subcommand_required(true)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
+        .arg(arg!(-s --sovrin).action(ArgAction::SetTrue))
         .subcommand(
             Command::new("did")
                 .about("DID functionality: create, attest, resolve.")
@@ -88,7 +90,10 @@ fn cli() -> Command {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let matches = cli().get_matches();
-    let endpoint = cli_config().ion_endpoint.to_address();
+    let sovrin = matches!(matches.get_one::<bool>("sovrin"), Some(true));
+
+    let endpoint = if sovrin { cli_config().sovrin_genesis_transactions.to_string()
+    } else { cli_config().ion_endpoint.to_address()} ;
     let verifier = TrustchainVerifier::new(trustchain_resolver(&endpoint));
     let resolver = verifier.resolver();
     let mut context_loader = ContextLoader::default();
